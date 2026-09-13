@@ -14,55 +14,34 @@
             --accent-gradient: linear-gradient(135deg, #5b6cf9, #3a4bd6);
             --secondary-text: #8e8e93;
         }
-        * { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0; 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-        }
-        body { 
-            background-color: var(--bg-color); 
-            color: var(--text-color); 
-            padding: 16px; 
+        * { box-sizing: border-box; margin: 0; padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 16px;
             padding-bottom: 80px;
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
         }
-
-        /* === АНИМИРОВАННЫЙ ФОН С ВОЛНАМИ === */
         #waves-canvas {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
             z-index: -1;
             display: block;
         }
-
-        /* Затемняющий слой поверх canvas для глубины */
         .overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
             z-index: -1;
             background: radial-gradient(circle at 50% 50%, rgba(10, 14, 26, 0.3) 0%, rgba(10, 14, 26, 0.85) 100%);
             pointer-events: none;
         }
-
-        .header { 
-            text-align: center; 
-            margin-bottom: 24px; 
-            margin-top: 8px;
-        }
-        .header h1 { 
-            font-size: 20px; 
-            font-weight: 600;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
-        }
+        .header { text-align: center; margin-bottom: 24px; margin-top: 8px; }
+        .header h1 { font-size: 20px; font-weight: 600; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6); }
 
         .card {
             background-color: var(--card-bg);
@@ -76,13 +55,13 @@
         }
 
         .input-group { margin-bottom: 16px; }
-        .input-group label { 
-            display: block; 
-            font-size: 12px; 
-            color: var(--secondary-text); 
-            margin-bottom: 8px; 
-            text-transform: uppercase; 
-            font-weight: 600; 
+        .input-group label {
+            display: block;
+            font-size: 12px;
+            color: var(--secondary-text);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            font-weight: 600;
             letter-spacing: 0.5px;
         }
         .input-field {
@@ -96,9 +75,7 @@
             outline: none;
             transition: border-color 0.2s;
         }
-        .input-field:focus {
-            border-color: var(--accent-color);
-        }
+        .input-field:focus { border-color: var(--accent-color); }
         .input-field::placeholder { color: #555; }
 
         .btn {
@@ -117,17 +94,11 @@
             margin-top: 10px;
             box-shadow: 0 4px 16px rgba(91, 108, 249, 0.4);
         }
-        .btn:active { 
-            transform: scale(0.98);
-            box-shadow: 0 2px 8px rgba(91, 108, 249, 0.6);
-        }
-        .btn-secondary { 
+        .btn:active { transform: scale(0.98); box-shadow: 0 2px 8px rgba(91, 108, 249, 0.6); }
+        .btn-secondary {
             background: rgba(44, 44, 53, 0.9);
             border: 1px solid rgba(91, 108, 249, 0.25);
             box-shadow: none;
-        }
-        .btn-secondary:active {
-            background: rgba(60, 60, 75, 0.9);
         }
 
         .nav-bar {
@@ -143,41 +114,44 @@
             z-index: 100;
         }
         .nav-item {
-            display: flex; 
-            flex-direction: column; 
-            align-items: center;
-            color: var(--secondary-text); 
-            font-size: 11px; 
-            cursor: pointer;
-            background: none; 
-            border: none; 
-            padding: 4px 12px;
+            display: flex; flex-direction: column; align-items: center;
+            color: var(--secondary-text); font-size: 11px; cursor: pointer;
+            background: none; border: none; padding: 4px 12px;
             transition: color 0.2s;
         }
         .nav-item.active { color: var(--accent-color); }
         .nav-item svg { width: 24px; height: 24px; margin-bottom: 4px; fill: currentColor; }
 
         .hidden { display: none !important; }
-
-        /* Плавное появление контента */
-        .screen {
-            animation: fadeIn 0.3s ease-in;
-        }
+        .screen { animation: fadeIn 0.3s ease-in; }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Сообщение об ошибке */
+        #error-box {
+            display: none;
+            background: rgba(220, 50, 50, 0.9);
+            color: white;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            word-break: break-word;
         }
     </style>
 </head>
 <body>
 
-    <!-- Анимированный фон с волнами -->
     <canvas id="waves-canvas"></canvas>
     <div class="overlay"></div>
 
     <div class="header">
         <h1 id="page-title">Создать эмодзи</h1>
     </div>
+
+    <div id="error-box"></div>
 
     <!-- Экран "Создать" -->
     <div id="screen-create" class="screen">
@@ -228,61 +202,109 @@
     </div>
 
     <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
+        // Безопасное получение объекта Telegram
+        let tg = null;
+        try {
+            if (window.Telegram && window.Telegram.WebApp) {
+                tg = window.Telegram.WebApp;
+                tg.expand();
+            }
+        } catch (e) {
+            showError("Не удалось получить доступ к Telegram WebApp: " + e.message);
+        }
 
-        // === НАВИГАЦИЯ ===
+        // Показать ошибку на экране
+        function showError(msg) {
+            const box = document.getElementById('error-box');
+            box.style.display = 'block';
+            box.innerText = '⚠ ' + msg;
+            console.error(msg);
+        }
+
+        // Навигация
         function switchTab(tabName, btnElement) {
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             btnElement.classList.add('active');
-            
+
             document.querySelectorAll('#screen-create, #screen-profile, #screen-giveaway').forEach(el => {
                 el.classList.add('hidden');
                 el.classList.remove('screen');
             });
-            
+
             const target = document.getElementById('screen-' + tabName);
             target.classList.remove('hidden');
-            // Перезапускаем анимацию
             void target.offsetWidth;
             target.classList.add('screen');
-            
+
             const titles = { create: 'Создать эмодзи', profile: 'Профиль', giveaway: 'Розыгрыш' };
             document.getElementById('page-title').innerText = titles[tabName];
         }
 
-        // === ОТПРАВКА ДАННЫХ В БОТА ===
+        // Отправка данных в бота
         function sendDataToBot() {
-            const text = document.getElementById('emoji-text').value;
-            const color = document.getElementById('emoji-color').value;
-            
-            if (!text) {
-                tg.showAlert("Введите текст!");
-                return;
+            try {
+                const textEl = document.getElementById('emoji-text');
+                const colorEl = document.getElementById('emoji-color');
+
+                if (!textEl || !colorEl) {
+                    showError("Не найдены поля ввода (emoji-text / emoji-color).");
+                    return;
+                }
+
+                const text = textEl.value.trim();
+                const color = colorEl.value;
+
+                if (!text) {
+                    if (tg && tg.showAlert) tg.showAlert("Введите текст!");
+                    else alert("Введите текст!");
+                    return;
+                }
+
+                if (!tg) {
+                    showError("Telegram WebApp не доступен. Открой приложение через кнопку в боте, а не в браузере.");
+                    return;
+                }
+
+                if (!tg.sendData) {
+                    showError("Метод sendData не доступен. Возможно, старая версия Telegram.");
+                    return;
+                }
+
+                tg.sendData(JSON.stringify({
+                    action: 'create_emoji',
+                    text: text,
+                    color: color
+                }));
+
+                tg.close();
+            } catch (e) {
+                showError("Ошибка при отправке: " + e.message);
             }
-
-            tg.sendData(JSON.stringify({
-                action: 'create_emoji',
-                text: text,
-                color: color
-            }));
-            
-            tg.close();
         }
 
+        // Отправка простого действия
         function sendAction(actionName) {
-            tg.sendData(JSON.stringify({ action: actionName }));
-            tg.close();
+            try {
+                if (!tg || !tg.sendData) {
+                    showError("WebApp не доступен.");
+                    return;
+                }
+                tg.sendData(JSON.stringify({ action: actionName }));
+                tg.close();
+            } catch (e) {
+                showError("Ошибка: " + e.message);
+            }
         }
 
-        // === АНИМИРОВАННЫЙ ФОН С ВОЛНАМИ ===
+        // === Анимированный фон с волнами ===
         (function initWaves() {
             const canvas = document.getElementById('waves-canvas');
+            if (!canvas) return;
             const ctx = canvas.getContext('2d');
-            
+
             let width, height;
             let animationId;
-            
+
             function resize() {
                 width = canvas.width = window.innerWidth;
                 height = canvas.height = window.innerHeight;
@@ -290,12 +312,11 @@
             window.addEventListener('resize', resize);
             resize();
 
-            // Параметры волн — 4 слоя с разными скоростями и цветами
             const waves = [
-                { amplitude: 60,  length: 0.008, speed: 0.010, color: 'rgba(91, 108, 249, 0.35)', offset: 0, yBase: 0.55 },
-                { amplitude: 45,  length: 0.012, speed: 0.015, color: 'rgba(58, 75, 214, 0.30)',  offset: 2, yBase: 0.65 },
-                { amplitude: 75,  length: 0.006, speed: 0.007, color: 'rgba(40, 50, 160, 0.25)',  offset: 4, yBase: 0.75 },
-                { amplitude: 35,  length: 0.015, speed: 0.020, color: 'rgba(120, 140, 255, 0.20)', offset: 1, yBase: 0.85 },
+                { amplitude: 60, length: 0.008, speed: 0.010, color: 'rgba(91, 108, 249, 0.35)', offset: 0, yBase: 0.55 },
+                { amplitude: 45, length: 0.012, speed: 0.015, color: 'rgba(58, 75, 214, 0.30)',  offset: 2, yBase: 0.65 },
+                { amplitude: 75, length: 0.006, speed: 0.007, color: 'rgba(40, 50, 160, 0.25)',  offset: 4, yBase: 0.75 },
+                { amplitude: 35, length: 0.015, speed: 0.020, color: 'rgba(120, 140, 255, 0.20)', offset: 1, yBase: 0.85 },
             ];
 
             let time = 0;
@@ -303,12 +324,10 @@
             function drawWave(wave, t) {
                 ctx.beginPath();
                 const yBasePx = height * wave.yBase;
-                
                 ctx.moveTo(0, height);
                 ctx.lineTo(0, yBasePx);
 
                 for (let x = 0; x <= width; x += 4) {
-                    // Комбинация двух синусоид для более естественной волны
                     const y = yBasePx
                         + Math.sin(x * wave.length + t * wave.speed + wave.offset) * wave.amplitude
                         + Math.sin(x * wave.length * 2.3 + t * wave.speed * 1.7 + wave.offset) * (wave.amplitude * 0.35);
@@ -318,7 +337,6 @@
                 ctx.lineTo(width, height);
                 ctx.closePath();
 
-                // Градиентная заливка волны
                 const grad = ctx.createLinearGradient(0, yBasePx - wave.amplitude, 0, height);
                 grad.addColorStop(0, wave.color);
                 grad.addColorStop(1, 'rgba(10, 14, 26, 0)');
@@ -328,8 +346,6 @@
 
             function animate() {
                 time += 1;
-                
-                // Чистим и рисуем глубокий градиент неба
                 const skyGrad = ctx.createLinearGradient(0, 0, 0, height);
                 skyGrad.addColorStop(0, '#0a0e1a');
                 skyGrad.addColorStop(0.5, '#0d1428');
@@ -337,12 +353,8 @@
                 ctx.fillStyle = skyGrad;
                 ctx.fillRect(0, 0, width, height);
 
-                // Рисуем каждую волну
-                for (const w of waves) {
-                    drawWave(w, time);
-                }
+                for (const w of waves) drawWave(w, time);
 
-                // Лёгкие "звёзды" в верхней части для атмосферы
                 ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
                 for (let i = 0; i < 30; i++) {
                     const sx = (Math.sin(i * 137.5 + time * 0.002) * 0.5 + 0.5) * width;
@@ -356,13 +368,9 @@
                 animationId = requestAnimationFrame(animate);
             }
 
-            // Пауза при скрытии страницы (экономия батареи)
             document.addEventListener('visibilitychange', () => {
-                if (document.hidden) {
-                    cancelAnimationFrame(animationId);
-                } else {
-                    animate();
-                }
+                if (document.hidden) cancelAnimationFrame(animationId);
+                else animate();
             });
 
             animate();
